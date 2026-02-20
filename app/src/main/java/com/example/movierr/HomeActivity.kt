@@ -28,6 +28,9 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Set the toolbar as the action bar
+        setSupportActionBar(binding.toolbar)
+
         binding.rvMovies.layoutManager = LinearLayoutManager(this)
         
         fetchMovies()
@@ -41,25 +44,15 @@ class HomeActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val movies = response.body()?.results ?: emptyList()
-                    if (movies.isEmpty()) {
-                        Toast.makeText(this@HomeActivity, "No movies found", Toast.LENGTH_SHORT).show()
-                    }
                     displayMovies(movies)
                 } else {
-                    val errorMsg = when(response.code()) {
-                        401 -> "Invalid API Key. Please check your TMDB key."
-                        404 -> "API URL not found"
-                        else -> "API Error: ${response.code()}"
-                    }
-                    Log.e("API_ERROR", errorMsg)
-                    Toast.makeText(this@HomeActivity, errorMsg, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@HomeActivity, "API Error", Toast.LENGTH_SHORT).show()
                     showDummyData()
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
-                Log.e("NETWORK_ERROR", t.message ?: "Unknown error")
                 Toast.makeText(this@HomeActivity, "Network Failure", Toast.LENGTH_SHORT).show()
                 showDummyData()
             }
@@ -89,9 +82,12 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_home -> return true
             R.id.menu_diary -> {
                 startActivity(Intent(this, DiaryActivity::class.java))
+                return true
+            }
+            R.id.menu_location -> {
+                startActivity(Intent(this, LocationActivity::class.java))
                 return true
             }
             R.id.menu_about -> {

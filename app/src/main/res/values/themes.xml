@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieRR" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="colorPrimary">#6200EE</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorOnPrimary">@color/white</item>
     </style>
 
     <style name="Theme.MovieRR" parent="Base.Theme.MovieRR" />
@@ -9,5 +12,12 @@
     <style name="Theme.MovieRR.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Style for the Toolbar to ensure black icons on white background -->
+    <style name="AppToolbarTheme" parent="ThemeOverlay.Material3.ActionBar">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="actionMenuTextColor">@color/black</item>
     </style>
 </resources>
