@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Date (YYYY-MM-DD)"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etEditDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="2024-05-20"
+        android:inputType="date" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Rating"
+        android:textStyle="bold" />
+
+    <RatingBar
+        android:id="@+id/rbEditRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Review"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etEditReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Write your review..."
+        android:inputType="textMultiLine" />
+
+</LinearLayout>
