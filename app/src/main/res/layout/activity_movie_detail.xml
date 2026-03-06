@@ -75,12 +75,28 @@
                 android:hint="Write your review here..."
                 android:layout_marginTop="8dp" />
 
+            <EditText
+                android:id="@+id/etPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter phone number for SMS alert"
+                android:inputType="phone"
+                android:layout_marginTop="12dp" />
+
             <Button
                 android:id="@+id/btnAddDiary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add to Diary"
                 android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/btnSendSms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Send Review Confirmation SMS"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_marginTop="8dp" />
 
         </LinearLayout>
     </ScrollView>

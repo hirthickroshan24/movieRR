@@ -1,23 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MovieRR" parent="Theme.Material3.DayNight.NoActionBar">
+    <!-- Updated Base application theme to Light -->
+    <style name="Base.Theme.MovieRR" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#6200EE</item>
-        <item name="colorPrimaryVariant">#3700B3</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
     </style>
 
     <style name="Theme.MovieRR" parent="Base.Theme.MovieRR" />
 
-    <style name="Theme.MovieRR.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.MovieRR.NoActionBar" parent="Base.Theme.MovieRR">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Style for the Toolbar to ensure black icons on white background -->
+    <!-- Style for the Toolbar with Black letters on White background -->
     <style name="AppToolbarTheme" parent="ThemeOverlay.Material3.ActionBar">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/black</item>
         <item name="actionMenuTextColor">@color/black</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- Specific Style for the Overflow Menu (Three Dots) to be Black -->
+    <style name="AppMenuTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@color/white</item>
     </style>
 </resources>

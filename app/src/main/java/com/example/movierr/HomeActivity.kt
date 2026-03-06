@@ -87,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_location -> {
-                startActivity(Intent(this, LocationActivity::class.java))
+                startActivity(Intent(this, MovieLocationActivity::class.java))
                 return true
             }
             R.id.menu_about -> {

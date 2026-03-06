@@ -5,20 +5,26 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.example.movierr.databinding.ActivityAboutBinding
+import com.example.movierr.databinding.ActivityDashboardBinding
 
-class AboutActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAboutBinding
+class DashboardActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAboutBinding.inflate(layoutInflater)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbarAbout)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        binding.toolbarAbout.setNavigationOnClickListener {
-            onBackPressed()
+        // Set up the custom toolbar
+        setSupportActionBar(binding.toolbarDashboard)
+        supportActionBar?.title = "Home Dashboard"
+
+        binding.btnExploreMovies.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
+
+        binding.btnMyDiary.setOnClickListener {
+            startActivity(Intent(this, DiaryActivity::class.java))
         }
     }
 
@@ -30,9 +36,7 @@ class AboutActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_home -> {
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                startActivity(intent)
+                // Already on Dashboard
                 return true
             }
             R.id.menu_diary -> {
@@ -40,10 +44,13 @@ class AboutActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_location -> {
-                startActivity(Intent(this, LocationActivity::class.java))
+                startActivity(Intent(this, MovieLocationActivity::class.java))
                 return true
             }
-            R.id.menu_about -> return true
+            R.id.menu_about -> {
+                startActivity(Intent(this, AboutActivity::class.java))
+                return true
+            }
             R.id.menu_team -> {
                 startActivity(Intent(this, TeamActivity::class.java))
                 return true
