@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "44194567307",
+    "project_id": "movierr-590ff",
+    "storage_bucket": "movierr-590ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:44194567307:android:2a112549f77218bdeeb08e",
+        "android_client_info": {
+          "package_name": "com.example.movierr"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOVVn6EVmImt7a9gQT0CAZVfNGm0a4-M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

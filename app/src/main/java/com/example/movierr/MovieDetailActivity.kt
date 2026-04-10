@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.movierr.databinding.ActivityMovieDetailBinding
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,6 +25,9 @@ class MovieDetailActivity : AppCompatActivity() {
     private val db by lazy { AppDatabase.getDatabase(this) }
     private var existingEntry: DiaryEntry? = null
     private val SMS_PERMISSION_CODE = 101
+    
+    // Firebase Reference
+    private val firebaseDatabase = FirebaseDatabase.getInstance().getReference("reviews")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +61,7 @@ class MovieDetailActivity : AppCompatActivity() {
             }
 
             binding.btnAddDiary.setOnClickListener {
-                saveReviewAndStartService(movieData.title)
+                saveReviewAndSync(movieData.title)
             }
 
             binding.btnSendSms.setOnClickListener {
@@ -100,38 +104,34 @@ class MovieDetailActivity : AppCompatActivity() {
         try {
             val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 this.getSystemService(SmsManager::class.java)
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SmsManager.getDefault()
             } else {
-                @Suppress("DEPRECATION")
                 SmsManager.getDefault()
             }
             
             smsManager.sendTextMessage(phoneNumber, null, message, null, null)
             Toast.makeText(this, "SMS sent successfully", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            // Fallback: Open SMS app if direct send fails
             try {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("sms:$phoneNumber"))
                 intent.putExtra("sms_body", message)
                 startActivity(intent)
-                Toast.makeText(this, "Opening SMS app...", Toast.LENGTH_SHORT).show()
             } catch (ex: Exception) {
-                Toast.makeText(this, "Failed to send SMS: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to send SMS", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun saveReviewAndStartService(movieName: String) {
+    private fun saveReviewAndSync(movieName: String) {
         val rating = binding.ratingBar.rating
-        val review = binding.etReview.text.toString()
+        val reviewText = binding.etReview.text.toString()
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        if (review.isEmpty()) {
+        if (reviewText.isEmpty()) {
             Toast.makeText(this, "Please write a review", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Start Foreground Service
         val serviceIntent = Intent(this, ReviewProcessingService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent)
@@ -140,17 +140,40 @@ class MovieDetailActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
+            // 1. Save to Local Room Database (Diary)
             val entry = DiaryEntry(
                 id = existingEntry?.id ?: 0,
                 movieTitle = movieName,
                 rating = rating,
-                review = review,
+                review = reviewText,
                 date = currentDate
             )
             db.diaryDao().insertEntry(entry)
-            val msg = if (existingEntry == null) "Review Submission Started" else "Update Started"
+
+            // 2. Sync with Firebase Realtime Database
+            syncToFirebase(movieName, reviewText, rating)
+
+            val msg = if (existingEntry == null) "Review Saved & Synced" else "Review Updated"
             Toast.makeText(this@MovieDetailActivity, msg, Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun syncToFirebase(movieName: String, reviewText: String, rating: Float) {
+        val reviewId = movieName.replace(".", "_").replace("#", "_") // Firebase keys shouldn't have . or #
+        val firebaseEntry = mapOf(
+            "movieName" to movieName,
+            "reviewText" to reviewText,
+            "rating" to rating,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        firebaseDatabase.child(reviewId).setValue(firebaseEntry)
+            .addOnSuccessListener {
+                // Successfully synced
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Firebase Sync Failed", Toast.LENGTH_SHORT).show()
+            }
     }
 }
