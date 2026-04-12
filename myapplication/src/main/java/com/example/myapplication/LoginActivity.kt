@@ -1,7 +1,8 @@
-package com.example.movierr
+package com.example.myapplication
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -11,6 +12,11 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Debugging: confirm activity launch
+        Log.d("LoginActivity", "LoginActivity launched")
+        Toast.makeText(this, "Welcome to LoginActivity", Toast.LENGTH_SHORT).show()
+        
+        // Ensure LoginActivity uses activity_login layout
         setContentView(R.layout.activity_login)
 
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -25,8 +31,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
-                // App Flow: Login -> Home
-                val intent = Intent(this, HomeActivity::class.java)
+                // Navigation: Go to MainActivity
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }

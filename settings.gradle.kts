@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "movieR&R"
 include(":app")
-include(":myapplication")
+// include(":myapplication") // Removed to prevent duplicate app installation
